@@ -1,11 +1,13 @@
 class Pdns < Formula
   desc "Authoritative nameserver"
   homepage "https://www.powerdns.com"
-  url "https://downloads.powerdns.com/releases/pdns-4.9.2.tar.bz2"
-  sha256 "f570640427041f4c5c5470d16eff951a7038c353ddc461b2750290ce99b2e3c2"
+  url "https://downloads.powerdns.com/releases/pdns-5.1.5.tar.bz2"
+  sha256 "7b670653ccd72be30d973bbdd349c4505beda1b87b842af702a341fa6837f8aa"
   license "GPL-2.0-or-later"
-  revision 1
 
+  # The first-party download page (https://www.powerdns.com/downloads) isn't
+  # always updated for newer versions, so for now we have to check the
+  # directory listing page where `stable` tarballs are found.
   livecheck do
     url "https://downloads.powerdns.com/releases/"
     regex(/href=.*?pdns[._-]v?(\d+(?:\.\d+)+)\.t/i)
@@ -20,24 +22,22 @@ class Pdns < Formula
     depends_on "ragel"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "lua"
-  depends_on "openssl@3"
+  depends_on "openssl@4"
   depends_on "sqlite"
 
   uses_from_macos "curl"
 
-  fails_with gcc: "5" # for C++17
-
   def install
-    args = %W[
-      --prefix=#{prefix}
-      --sysconfdir=#{etc}/powerdns
-      --with-lua
-      --with-libcrypto=#{Formula["openssl@3"].opt_prefix}
-      --with-sqlite3
-      --with-modules=bind\ pipe\ remote\ gsqlite3
+    args = [
+      "--prefix=#{prefix}",
+      "--sysconfdir=#{etc}/powerdns",
+      "--with-lua",
+      "--with-libcrypto=#{formula_opt_prefix("openssl@4")}",
+      "--with-sqlite3",
+      "--with-modules=bind pipe remote gsqlite3",
     ]
     system "./bootstrap" if build.head?
     system "./configure", *args
@@ -50,7 +50,7 @@ class Pdns < Formula
   end
 
   test do
-    output = shell_output("#{sbin}/pdns_server --version 2>&1", 99)
+    output = shell_output("#{sbin}/pdns_server --version 2>&1")
     assert_match "PowerDNS Authoritative Server #{version}", output
   end
 end
