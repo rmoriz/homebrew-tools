@@ -29,11 +29,21 @@ class GitTime < Formula
     end
   end
 
+  resource "manpage" do
+    url "https://raw.githubusercontent.com/rmoriz/git-time/v0.3.0/docs/git-time.1"
+    sha256 "e1025926ac6ec7540470375c0dafb8ed10f1ac110dcb6786ebbfa130260c1d20"
+  end
+
   def install
     bin.install Dir["git-time-*"].first => "git-time"
+
+    resource("manpage").stage do
+      man1.install "git-time.1"
+    end
   end
 
   test do
     assert_match "git time #{version}", shell_output("#{bin}/git-time --version")
+    assert_path_exists man1/"git-time.1"
   end
 end

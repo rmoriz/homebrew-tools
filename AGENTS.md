@@ -53,6 +53,9 @@ trusted on the machine; `brew trust <tap>` once if they refuse to load it.
 - Shell completions ship separately upstream are fetched in `install` and
   placed via `bash_completion.install` and `zsh_completion.install`, installed
   under the command name (`"file.bash" => "cmd"`).
+- Man pages that upstream keeps outside the release artifact go in a
+  `resource` block pinned to the release tag, and are installed via
+  `resource("manpage").stage { man1.install "…" }`.
 - Add a `livecheck` block when the download page is not auto-detectable, and a
   comment explaining the URL choice.
 - Prefer the narrowest `test do` that proves the binary runs.
