@@ -8,11 +8,11 @@ Or `brew tap rmoriz/tools` and then `brew install <formula>`.
 
 ## Formulae
 
-| Formula | Version | Description |
-| --- | --- | --- |
-| `git-time` | 0.3.0 | Verifiable RFC 3161 timestamps inside git commits |
-| `pdns` | 5.1.5 | Authoritative nameserver |
-| `dublin-traceroute` | 0.4.2 | NAT-aware multipath tracerouting tool |
+| Formula | Version | Description | Install |
+| --- | --- | --- | --- |
+| `git-time` | 0.3.0 | Verifiable RFC 3161 timestamps inside git commits | `brew install rmoriz/tools/git-time` |
+| `pdns` | 5.1.5 | Authoritative nameserver | `brew install rmoriz/tools/pdns` |
+| `dublin-traceroute` | 0.4.2 | NAT-aware multipath tracerouting tool | `brew install rmoriz/tools/dublin-traceroute` |
 
 ## Documentation
 
