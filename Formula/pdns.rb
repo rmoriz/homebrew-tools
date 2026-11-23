@@ -39,9 +39,14 @@ class Pdns < Formula
       "--with-sqlite3",
       "--with-modules=bind pipe remote gsqlite3",
     ]
+    completion_url = "https://raw.githubusercontent.com/PowerDNS/pdns/master/contrib"
+    system "curl", "#{completion_url}/pdnsutil.bash_completion.d", "-o", "pdnsutil.bash_completion.d"
+    system "curl", "#{completion_url}/_pdnsutil.zsh_completion", "-o", "_pdnsutil.zsh_completion"
     system "./bootstrap" if build.head?
     system "./configure", *args
     system "make", "install"
+    bash_completion.install "pdnsutil.bash_completion.d" => "pdnsutil"
+    zsh_completion.install "_pdnsutil.zsh_completion" => "_pdnsutil"
   end
 
   service do
