@@ -1,4 +1,4 @@
-# AGENT.md
+# AGENTS.md
 
 Instructions for agents working in `rmoriz/homebrew-tools`, a personal Homebrew tap.
 

@@ -18,4 +18,4 @@ Or `brew tap rmoriz/tools` and then `brew install <formula>`.
 
 `brew help`, `man brew` or check [Homebrew's documentation](https://docs.brew.sh).
 
-See [AGENT.md](AGENT.md) for how this tap is maintained.
+See [AGENTS.md](AGENTS.md) for how this tap is maintained.
