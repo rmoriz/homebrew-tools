@@ -72,21 +72,21 @@ class WhoisRmoriz < Formula
           [[ -z $line || $line == '%'* ]] && continue
           values+=("${line%%:*}")
         done < <("$cmd" -q "$kind" 2>/dev/null)
-        _whois_rmoriz_lists[$key]="${(j: :)values}"
+        _whois_rmoriz_lists[$key]="${(F)values}"
         return 0
       }
 
       _whois-rmoriz_values() {
         _whois-rmoriz_fetch $words[1] $1
         local -a values
-        values=(${(s: :)_whois_rmoriz_lists[$words[1]:$1]})
+        values=(${(f)_whois_rmoriz_lists[$words[1]:$1]})
         (( $#values )) && compadd -a values
       }
 
       _whois-rmoriz_list() {
         _whois-rmoriz_fetch $words[1] $1
         local -a values
-        values=(${(s: :)_whois_rmoriz_lists[$words[1]:$1]})
+        values=(${(f)_whois_rmoriz_lists[$words[1]:$1]})
         (( $#values )) && _values -s , $1 $values
       }
 
@@ -140,21 +140,21 @@ class WhoisRmoriz < Formula
       # Upstream ships a bash completion only. The method list comes from
       # `--method=help` and is cached for the shell.
 
-      typeset -g _mkpasswd_rmoriz_methods
+      typeset -gA _mkpasswd_rmoriz_methods
 
       _mkpasswd-rmoriz_methods() {
-        if (( ! ${+_mkpasswd_rmoriz_methods} )); then
-          local line name desc
-          local -a methods
+        local cmd=$words[1] line name desc
+        local -a methods
+        if (( ! ${+_mkpasswd_rmoriz_methods[$cmd]} )); then
           while IFS= read -r line; do
             [[ -z $line || $line == Available* ]] && continue
             read -r name desc <<< $line
             methods+=("$name:$desc")
-          done < <("$words[1]" --method=help 2>/dev/null)
-          _mkpasswd_rmoriz_methods="${(j: :)methods}"
+          done < <("$cmd" --method=help 2>/dev/null)
+          _mkpasswd_rmoriz_methods[$cmd]="${(F)methods}"
         fi
         local -a entries
-        entries=(${(s: :)_mkpasswd_rmoriz_methods})
+        entries=(${(f)_mkpasswd_rmoriz_methods[$cmd]})
         (( $#entries )) && _describe -t methods 'crypt method' entries
       }
 
